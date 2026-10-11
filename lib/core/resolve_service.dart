@@ -30,7 +30,10 @@ Future<String?> resolveIdWithRedirect(String line) async {
   if (extractNeteaseId(line) != null) return extractNeteaseId(line);
   final raw = RegExp(r'https?://[^\s"<>]+').firstMatch(line)?.group(0);
   if (raw == null) return null;
-  var current = raw.replaceAll(RegExp(r'[\)\]\.\,\;\!\"\'\s]+$'), '');
+  var current = raw.trim();
+  while (current.isNotEmpty && (current.endsWith(')') || current.endsWith(']') || current.endsWith('.') || current.endsWith(',') || current.endsWith(';') || current.endsWith('!'))) {
+    current = current.substring(0, current.length - 1);
+  }
   final client = http.Client();
   try {
     for (var i = 0; i < 4; i++) {

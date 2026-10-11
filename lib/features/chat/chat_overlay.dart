@@ -30,7 +30,7 @@ class _ToastItem extends StatelessWidget {
         ])),
         if(me) const SizedBox(width:8),
         if(me) MemberAvatar(name:t.nickname,id:t.from,avatar:t.avatar,image:img,radius:14),
-      ]))))),
+      ])))))),
     ]))));
   }
 }
