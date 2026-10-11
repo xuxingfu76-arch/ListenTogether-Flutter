@@ -1,10 +1,10 @@
 name: Flutter Build
 on:
   push:
-    branches: [main]
-    paths: ['lib/**', 'pubspec.yaml', '.github/workflows/flutter.yml']
+    branches: [flutter-md3]
+    paths: ['flutter_app/**', '.github/workflows/flutter.yml']
   pull_request:
-    branches: [main]
+    branches: [flutter-md3]
   workflow_dispatch:
 jobs:
   build:
@@ -13,13 +13,14 @@ jobs:
       contents: write
     defaults:
       run:
-        working-directory: .
+        working-directory: flutter_app
     steps:
       - name: Checkout
         uses: actions/checkout@v5
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.35.1'
           channel: stable
           cache: true
       - name: Pub get
@@ -35,7 +36,7 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
           retention-days: 14
       - name: Publish Release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/flutter-md3'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: flutter-v${{ github.run_number }}
