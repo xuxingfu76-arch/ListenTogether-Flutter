@@ -1,0 +1,45 @@
+name: Flutter Build
+on:
+  push:
+    branches: [main]
+    paths: ['lib/**', 'pubspec.yaml', '.github/workflows/flutter.yml']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Pub get
+        run: flutter pub get
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos || true
+      - name: Assemble Release APK
+        run: flutter build apk --release
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 14
+      - name: Publish Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: flutter-v${{ github.run_number }}
+          name: ListenTogether Flutter v${{ github.run_number }}
+          files: build/app/outputs/flutter-apk/app-release.apk
+          generate_release_notes: true
+          prerelease: true
