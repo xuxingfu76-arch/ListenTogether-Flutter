@@ -15,7 +15,7 @@ android {
     }
 
     compileOptions {
-        isCoreLibraryDesugaringEnabled = true
+        coreLibraryDesugaringEnabled = true
     }
 
     defaultConfig {
