@@ -1,19 +1,15 @@
 name: Flutter Build
 on:
   push:
-    branches: [flutter-md3]
-    paths: ['flutter_app/**', '.github/workflows/flutter.yml']
+    branches: [main]
   pull_request:
-    branches: [flutter-md3]
+    branches: [main]
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    defaults:
-      run:
-        working-directory: flutter_app
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -36,7 +32,7 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
           retention-days: 14
       - name: Publish Release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/flutter-md3'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: flutter-v${{ github.run_number }}
