@@ -6,22 +6,22 @@ plugins {
 
 android {
     namespace = "com.eriii.listen_flutter"
-    compileSdk = 34
-    ndkVersion = "25.1.8937393"
+    compileSdk = 36
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
     }
 
     defaultConfig {
         applicationId = "com.eriii.listen_flutter"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
     }
@@ -33,6 +33,9 @@ android {
     }
 }
 
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+}
 flutter {
     source = "../.."
 }
